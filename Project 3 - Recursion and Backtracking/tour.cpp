@@ -5,6 +5,7 @@
 
 using namespace std;
 	
+//--- Definition of initalKTsol
 bool tour::initialKTsol(int height, int width) {
 
 	if (height > 0 && width > 0) { //check that the board is valid
@@ -30,37 +31,29 @@ bool tour::initialKTsol(int height, int width) {
 	}
 }
 
-	
+//--- Definition of printSolution
 void tour::printSolution(int **sol, int height, int width) {
 	
-	int k = 0;
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
 
-			cout << sol[i][j] << " ";
-			k++;
-
-			if (k == width) {
-
-				k = 0;
-				cout << endl;
-			}
+			cout << KTsol[j][i] << " ";					
 		}
+		cout << endl;
 	}	
 
 	//delete the solution array to avoid memory leaks
 	for (int i = 0; i < width; i++) {
 		
-		delete[] sol[i];
+		delete[] KTsol[i];
 	}
 
-	delete[] sol;
+	delete[] KTsol;
 }
 
+//--- Definition of isSafe
 int tour::isSafe(int ** sol, int x, int y, int height, int width) {
 	
-	//cout << x << endl << y << endl << height << endl << width << endl << sol[x][y] << endl;
-
 	if ( (x >= 0 && x < width) && (y >= 0 && y < height) && sol[x][y] == -1) {
 
 		return 1;
@@ -72,6 +65,7 @@ int tour::isSafe(int ** sol, int x, int y, int height, int width) {
 	}		
 }
 
+//--- Definition of solveKT
 bool tour::solveKT(int height, int width, int startx, int starty) {
 
 	initialKTsol(height, width); //intialize the chess board
@@ -93,6 +87,7 @@ bool tour::solveKT(int height, int width, int startx, int starty) {
 	}
 }
 
+//--- Definition of sovleKTUtil
 bool tour::solveKTUtil(int ** sol, int height, int width, int x, int y, int movei) {
 
 	if (movei == height*width) return true; //checks if the entire board has been traversed
@@ -128,34 +123,15 @@ bool tour::solveKTUtil(int ** sol, int height, int width, int x, int y, int move
 	}
 }
 
-
-void tour::solveKTAll(int height, int width, int startx, int starty) {
-
-												 
- //base case is that all possible move solutions have been tried (8! = 40320) ...seems extreme
-	//try std::next_permutation on the pairs array?
-
-	//something like while (i < 40320) { give next permutation to the solveKT function, 
-	//save each sucessful solution array board, check for duplicates, etc.. }
-	//I feel like this would take an extremely long time to compute
-
-	//randomly choose next move...at the very end compare all solutions and if there are duplicates dont count both, only 1 ....i dont think so
-
-	//solveKTUtilall(int ** sol, int height, int width, int x, int y, int movei, int solcount)
-
+//--- Definition of solveKTAll
+void tour::solveKTAll(int height, int width, int startx, int starty) {										
 
 	initialKTsol(height, width); //intialize the chess board
 
-	startx = 0; //temp
-	starty = 0; //temp
-
 	int solCount = 0;
+	solveKTUtilAll(KTsol, height, width, 0, 0, 0, solCount);
 
-	KTsol[startx][starty] = 0; //temp starting position at (0,0), mark position as visited on the first move (index 0)
-
-	solveKTUtilAll(KTsol, height, width, 0, 0, 1, solCount);
-
-	if (solCount > 0) {
+	/*if (solCount > 0) {
 
 		//TODO print all solutions, should be handled in util
 		//printSolution(KTsol, height, width);
@@ -164,39 +140,36 @@ void tour::solveKTAll(int height, int width, int startx, int starty) {
 	}
 	else {
 
-
 		cout << "No Possible Solution For Starting Point: (" << startx << ", " << starty << ")" << endl << endl;
 		return;
-
-	}
-
-
+	}*/
 
 	return;
 }
 
+//--- Definition of solveKTUtilALL
 int tour::solveKTUtilAll(int ** sol, int height, int width, int x, int y, int movei, int &solCount) {
-	
-	/*
-	
-		if the correct number of moves have been made (h*w) increment the solution count, print the solution, and return, done in this function call
 
-		have a for loop that makes each possible move
-		check if the next move is valid, if it is, call this function again with the new cordinates and increment the move count
+	if (isSafe(KTsol, x, y, height, width) == 0) { //check if move is not safe
 
-		at the end of all the function calls return a value based on if a solution was found from thsi starting point
-	
-	*/
-	
+		return 0;
+	}
+
 	if (movei == height * width) {
 			
 		cout << "Solution Found!" << endl;
 		solCount++;
 		cout << movei << " " << solCount << endl << endl;
-		printSolution(sol, height, width);
-		return 1;
-	}
+		printSolution(KTsol, height, width);
+		initialKTsol(height, width); //reintialize the chess board to find the next solution
+		sol = KTsol;
+		movei = 1;
+		return solCount;
+	}	
 
+	KTsol[x][y] = movei; //mark cell as visited
+
+	//try all possible moves
 	for (int i = 0; i < 8; i++) {
 
 		int currentXMove = possibleXMoves[i];
@@ -205,40 +178,14 @@ int tour::solveKTUtilAll(int ** sol, int height, int width, int x, int y, int mo
 		int nextX = x + currentXMove;
 		int nextY = y + currentYMove;
 
-		if (isSafe(sol, nextX, nextY, height, width) == 1) {
+		//works!!!****
 
+		//cout << "movei : " << movei << endl;
 
-			sol[nextX][nextY] = movei; //mark cell as visited
-
-			cout << "marked cell as visited  " << sol[nextX][nextY] << endl;
-
-			if (solveKTUtilAll(sol, height, width, nextX, nextY, movei + 1, solCount) == 1) { //call function recursively with new cordinates and move count
-
-				return 1;
-			}
-			else {
-
-				sol[nextX][nextY] = -1; //solution did not work, reset it and backtrack
-			}
-		}
-		else {
-
-			return 0;
-		}
-	}
-	
-	
-	if (solCount > 1) {
-		
-		return 1;
+		solveKTUtilAll(KTsol, height, width, nextX, nextY, movei + 1, solCount); //call function recursively with new cordinates and move count
 	}
 
-	else {
-		
-		return 0;
-	}
-
-
+	KTsol[x][y] = -1; //mark cell as not visited (backtracking)
 }
 
 

@@ -1,11 +1,14 @@
 #pragma once 
 
+///////////////////////////////////
+//	Thomas Freeman
+//	Data Structures Project 3 - Recursion and Backtracking
+///////////////////////////////////
+
 #include "tour.h"
 #include "permutations.h"
 
 using namespace std;
-
-//TODO comments
 
 int arraySize = 3;
 
@@ -66,7 +69,7 @@ void testSubProject2() {
 
 int main() {
 
-	/*int input;
+	int input;
 
 	cout << "Would you like to test sub-project 1 or 2?" << endl;
 	cin >> input;
@@ -81,23 +84,26 @@ int main() {
 		testSubProject2();
 	} 
 
-
-	cout << "Height: 3    Width: 7\nStart X: 0    Start Y: 0" << endl << endl;
+/*
+	cout << "Height: 4    Width: 3\nStart X: 0    Start Y: 0" << endl << endl;
 	cout << "Should be 8 solutions" << endl;
 	cout << "testing all solutions..." << endl;
 
 	tour kt;
-	kt.solveKTAll(3, 7, 0, 0);
+	kt.solveKTAll(4, 3, 0, 0);
 
-	*/
+	
 
 
-	//testSubProject2();
+	testSubProject2();
 	
 	cout << "Height: 4    Width: 3\nStart X: 0    Start Y: 0" << endl << endl;
 	tour kt;
 	kt.solveKT(4, 3, 0, 0);
 
+	*/
+
+	cout << endl << "done";
 
 	cin.ignore();
 	

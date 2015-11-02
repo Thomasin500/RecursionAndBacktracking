@@ -1,5 +1,11 @@
 #pragma once
 
+//Permutations Class
+//This class is used to display each permutation of a given array as well as calculate factorials
+//It takes as an input the array to be permutated as well as its size
+//output is each permutation of the array
+//tested with the array [1,2,3]
+
 #include <iostream>
 
 using namespace std;
@@ -8,6 +14,7 @@ class permutations {
 
 public:	
 
+	//this function outputs the array items
 	template <class T> 
 	void outputArray(T* items, const int& size, ostream &out) {
 	
@@ -18,7 +25,14 @@ public:
 
 		out << endl;
 	}
+	/*-----------------------------------------------------------------------
+	outputArray
 
+	Precondition:  an array of any data type
+	Postcondition: all the array items have been displayed
+	-----------------------------------------------------------------------*/
+
+	//calculates the factorial of any integer N
 	long factorial(const int& n) {
 	
 		if (n == 1) {
@@ -30,9 +44,14 @@ public:
 			return n * factorial(n - 1);
 		}
 	}
+	/*-----------------------------------------------------------------------
+	factorial
+
+	Precondition:  integer n
+	Postcondition: this function recursively calculates and returns the factorial of the input n 
+	-----------------------------------------------------------------------*/
 	
-	//will be n! permutations (n == size of array)
-	//TODO***S This function is a little different than the one given in the project description and does not meet all the critieria of it
+	//displays each permutation
 	template <class T> 
 	void outputPermutations(T* items, int pos, const int& size, ostream& out) {
 		
@@ -52,4 +71,10 @@ public:
 			}
 		}
 	}
+	/*-----------------------------------------------------------------------
+	outputPermutations
+
+	Precondition:  array of any datatype, the array's size, and the stream to be outputted
+	Postcondition: all permuations of the array are outputted
+	-----------------------------------------------------------------------*/
 };
