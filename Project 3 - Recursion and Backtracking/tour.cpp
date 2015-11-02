@@ -131,19 +131,6 @@ void tour::solveKTAll(int height, int width, int startx, int starty) {
 	int solCount = 0;
 	solveKTUtilAll(KTsol, height, width, 0, 0, 0, solCount);
 
-	/*if (solCount > 0) {
-
-		//TODO print all solutions, should be handled in util
-		//printSolution(KTsol, height, width);
-		
-		return;
-	}
-	else {
-
-		cout << "No Possible Solution For Starting Point: (" << startx << ", " << starty << ")" << endl << endl;
-		return;
-	}*/
-
 	return;
 }
 
@@ -161,9 +148,8 @@ int tour::solveKTUtilAll(int ** sol, int height, int width, int x, int y, int mo
 		solCount++;
 		cout << movei << " " << solCount << endl << endl;
 		printSolution(KTsol, height, width);
-		initialKTsol(height, width); //reintialize the chess board to find the next solution
-		sol = KTsol;
-		movei = 1;
+		initialKTsol(height, width); //reintialize the chess board to find the next solution		
+		
 		return solCount;
 	}	
 
@@ -178,19 +164,8 @@ int tour::solveKTUtilAll(int ** sol, int height, int width, int x, int y, int mo
 		int nextX = x + currentXMove;
 		int nextY = y + currentYMove;
 
-		//works!!!****
-
-		//cout << "movei : " << movei << endl;
-
 		solveKTUtilAll(KTsol, height, width, nextX, nextY, movei + 1, solCount); //call function recursively with new cordinates and move count
 	}
 
 	KTsol[x][y] = -1; //mark cell as not visited (backtracking)
 }
-
-
-
-		
-
-	
-
